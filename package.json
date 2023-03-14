@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zizo2k21/farkle-game.git"
