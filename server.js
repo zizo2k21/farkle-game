@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import healthcheck from './routes/healthcheck.js'
 dotenv.config()
 
 const PORT = process.env.PORT || 80
@@ -14,6 +15,12 @@ app.use(cors({
 	credentials: true
 }))
 
+
+
+
+
+//routes
+app.use("/healthcheck", healthcheck);
 app.listen(PORT, () => console.log(`Server listening on port : ${PORT}`))
 
 export default app
