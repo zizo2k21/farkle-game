@@ -1,0 +1,12 @@
+version: "3"
+services:
+    farkle-node:
+        image: "node:16-alpine3.14"
+        container_name: "farkle-node"
+        entrypoint: "/bin/sh -c -- \"while true; do sleep 10; done\""
+        ports:
+          - 8080:8080
+        volumes:
+            - "./:/farkle"
+        working_dir: /farkle
+        restart: always
