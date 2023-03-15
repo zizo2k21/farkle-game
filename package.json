@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "db": "node ./utils/createDb.js",
-    "dev": "nodemon --legacy-watch -L server.js",
+    "dev": "nodemon --legacy-watch -L server.js"
   },
   "type": "module",
   "repository": {
