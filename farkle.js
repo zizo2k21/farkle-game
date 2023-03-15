@@ -129,7 +129,7 @@ const game_turn = (is_interactive=true) => {
 
             console.log('\n-->', 'got zero point ', turn_score, 'lost points\n')
 
-            roll_again = False
+            roll_again = false
             turn_score = 0
         } else {
             turn_score += roll_score['score']
@@ -149,11 +149,11 @@ const game_turn = (is_interactive=true) => {
             if (stop_turn) {
                 console.log('\n-->', current_player['name'], 'Scoring turn with', turn_score, 'points\n')
 
-                roll_again = False
+                roll_again = false
             }
         }
     }
     return turn_score
 }
 
-game_turn(true)
+game_turn(false)

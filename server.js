@@ -28,10 +28,11 @@ const io = new Server(httpServer, {
 })
 
 io.on("connection", (socket) => {
-	// console.log(socket.id)
-})
-io.on("ok", (socket) => {
-	console.log(socket.id)
+	const res = {
+		message: "you are connected",
+		socketId: socket.id
+	}
+	socket.emit('connection', res)
 })
 
 httpServer.listen(8080, () => console.log("Server is running on port 8080"))
