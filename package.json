@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "db": "node ./utils/createDb.js",
+    "dev": "nodemon --legacy-watch -L server.js",
   },
   "type": "module",
   "repository": {
@@ -18,6 +20,9 @@
   },
   "homepage": "https://github.com/zizo2k21/farkle-game#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.21"
   }
 }
