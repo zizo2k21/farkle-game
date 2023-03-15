@@ -75,8 +75,8 @@ const analyse_standard_score = (dice_value_occurrence) => {
     let standard_score = 0
     let scoring_dice_value_index = 0
     while (scoring_dice_value_index < SCORING_DICE_VALUE.length) {
-        scoring_value = SCORING_DICE_VALUE[scoring_dice_value_index]
-        scoring_multiplier = SCORING_MULTIPLIER[scoring_dice_value_index]
+        let scoring_value = SCORING_DICE_VALUE[scoring_dice_value_index]
+        let scoring_multiplier = SCORING_MULTIPLIER[scoring_dice_value_index]
 
         standard_score += dice_value_occurrence[scoring_value - 1] * scoring_multiplier
 
@@ -105,29 +105,29 @@ const analyse_score = (dice_value_occurrence) => {
     // the occurrence list of scoring dice value is the sum from scoring dice by bonus and standard rules
     let scoring_dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
     let side_value_index = 0
-    while s(ide_value_index < NB_DICE_SIDE) {
+    while (side_value_index < NB_DICE_SIDE) {
         scoring_dice_value_occurrence[side_value_index] = scoring_dice_from_bonus[side_value_index] + scoring_dice_from_std[side_value_index]
         side_value_index += 1
     }
     return {'score': score_std + score_bonus,
             'scoring_dice': scoring_dice_value_occurrence,
             'non_scoring_dice': non_scoring_dice_from_std}
+}
 
-
-const game_turn = (is_interactive=True) => {
+const game_turn = (is_interactive=true) => {
     let remaining_dice_to_roll = DEFAULT_DICES_NB
-    let roll_again = True
-    const current_player = {'name': input("whats your name ? "), 'score': 0, 'lost_score': 0, 'nb_of_roll': 0, 'nb_of_turn': 0, 'nb_of_scoring_turn': 0, 'nb_of_non_scoring_turn': 0, 'nb_of_full_roll': 0}
+    let roll_again = true
+    const current_player = {'name': 'Player', 'score': 0, 'lost_score': 0, 'nb_of_roll': 0, 'nb_of_turn': 0, 'nb_of_scoring_turn': 0, 'nb_of_non_scoring_turn': 0, 'nb_of_full_roll': 0}
 
     let turn_score = 0
     while (roll_again) {
         let dice_value_occurrence = roll_dice_set(remaining_dice_to_roll)
         let roll_score = analyse_score(dice_value_occurrence)
-        remaining_dice_to_roll = sum(roll_score['non_scoring_dice'])
+        remaining_dice_to_roll = roll_score['non_scoring_dice'].reduce((a, b) => a + b, 0)
 
         if (roll_score['score'] == 0) {
 
-            print('\n-->', 'got zero point ', turn_score, 'lost points\n')
+            console.log('\n-->', 'got zero point ', turn_score, 'lost points\n')
 
             roll_again = False
             turn_score = 0
@@ -136,27 +136,24 @@ const game_turn = (is_interactive=True) => {
 
             if (remaining_dice_to_roll == 0) {
                 remaining_dice_to_roll = DEFAULT_DICES_NB
-                print('-->Full Roll')
+                console.log('-->Full Roll')
             }
-            print('Roll Score=', roll_score['score'], 'potential turn score=', turn_score, 'remaining dice=', remaining_dice_to_roll)
+            console.log('Roll Score=', roll_score['score'], 'potential turn score=', turn_score, 'remaining dice=', remaining_dice_to_roll)
 
-            # choice to roll again or stop and take roll score
-            if is_interactive:
-                # interactive decision for real game
-                stop_turn = input("Do you want to roll this dice ? [y/n] ") == "n"
-            else:
-                # random decision for game simulation (50/50)
-                stop_turn = (random.randint(1, 100) % 2) == 0
-
-            if stop_turn:
-                # stop turn and take roll score
-
-                print('\n-->', current_player['name'], 'Scoring turn with', turn_score, 'points\n')
+            let stop_turn
+            if (is_interactive) {
+                stop_turn = prompt("Do you want to roll this dice ? [y/n] ")
+            } else {
+                stop_turn = (Math.floor(Math.random() * 100) % 2) === 0
+            }
+            if (stop_turn) {
+                console.log('\n-->', current_player['name'], 'Scoring turn with', turn_score, 'points\n')
 
                 roll_again = False
+            }
         }
     }
     return turn_score
 }
 
-game_turn(True)
+game_turn(true)
