@@ -25,7 +25,7 @@ const getRandomDiceValue = (max) => {
     return ( Math.floor(Math.random() * max) + 1 )
 }
 
-const roll_dice_set = (nb_dice_to_roll) => {
+export const roll_dice_set = (nb_dice_to_roll) => {
 
     let dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
     let dice_index = 0
@@ -38,7 +38,7 @@ const roll_dice_set = (nb_dice_to_roll) => {
     return dice_value_occurrence
 }
 
-const analyse_bonus_score = (dice_value_occurrence) => {
+export const analyse_bonus_score = (dice_value_occurrence) => {
     let scoring_dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
 
     let bonus_score = 0
@@ -69,7 +69,7 @@ const analyse_bonus_score = (dice_value_occurrence) => {
 }
 
 
-const analyse_standard_score = (dice_value_occurrence) => {
+export const analyse_standard_score = (dice_value_occurrence) => {
     let scoring_dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
 
     let standard_score = 0
@@ -91,7 +91,7 @@ const analyse_standard_score = (dice_value_occurrence) => {
             'non_scoring_dice': dice_value_occurrence}
 }
 
-const analyse_score = (dice_value_occurrence) => {
+export const analyse_score = (dice_value_occurrence) => {
     let analyse_score_bonus = analyse_bonus_score(dice_value_occurrence)
     let score_bonus = analyse_score_bonus['score']
     let scoring_dice_from_bonus = analyse_score_bonus['scoring_dice']
