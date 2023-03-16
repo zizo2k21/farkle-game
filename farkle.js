@@ -28,10 +28,12 @@ const getRandomDiceValue = (max) => {
 export const roll_dice_set = (nb_dice_to_roll) => {
 
     let dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
+    
     let dice_index = 0
     while (dice_index < nb_dice_to_roll) {
         const dice_value = getRandomDiceValue(NB_DICE_SIDE)
         dice_value_occurrence[dice_value - 1] += 1
+        console.log(dice_value_occurrence);
         dice_index += 1
     }
 
@@ -39,6 +41,7 @@ export const roll_dice_set = (nb_dice_to_roll) => {
 }
 
 export const analyse_bonus_score = (dice_value_occurrence) => {
+    console.log(dice_value_occurrence);
     let scoring_dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
 
     let bonus_score = 0
@@ -47,7 +50,7 @@ export const analyse_bonus_score = (dice_value_occurrence) => {
 
         let side_value_occurrence = dice_value_occurrence[side_value_index]
 
-        let nb_of_bonus = side_value_occurrence // THRESHOLD_BONUS
+        let nb_of_bonus = Math.floor(side_value_occurrence / THRESHOLD_BONUS)
         if (nb_of_bonus > 0){
             let bonus_multiplier
             if (side_value_index == 0){
@@ -62,7 +65,10 @@ export const analyse_bonus_score = (dice_value_occurrence) => {
             }
         }
         side_value_index += 1
+
+        
     }
+    console.log(bonus_score);
     return {'score': bonus_score,
             'scoring_dice': scoring_dice_value_occurrence,
             'non_scoring_dice': dice_value_occurrence}
@@ -70,6 +76,8 @@ export const analyse_bonus_score = (dice_value_occurrence) => {
 
 
 export const analyse_standard_score = (dice_value_occurrence) => {
+    console.log(dice_value_occurrence);
+
     let scoring_dice_value_occurrence = [...Array(NB_DICE_SIDE).fill(0)]
 
     let standard_score = 0
@@ -85,7 +93,10 @@ export const analyse_standard_score = (dice_value_occurrence) => {
         dice_value_occurrence[scoring_value - 1] = 0
 
         scoring_dice_value_index += 1
+
+        
     }
+    console.log(standard_score);
     return {'score': standard_score,
             'scoring_dice': scoring_dice_value_occurrence,
             'non_scoring_dice': dice_value_occurrence}
@@ -156,4 +167,4 @@ const game_turn = (is_interactive=true) => {
     return turn_score
 }
 
-game_turn(false)
+//game_turn(false)
