@@ -31,16 +31,26 @@ const io = new Server(httpServer, {
 let dice = [];
 let score = 0;
 
-function rollDice(nb_dice_to_roll) {
+function rollDice(nb_dice_to_roll, scoretotal) {
+	console.log(scoretotal);
 	console.log(nb_dice_to_roll);
 	dice = roll_dice_set(nb_dice_to_roll)
 	console.log(dice);
 	io.emit("dice", dice);
 	
 	score = analyse_score(dice);
+	const nb_nn_scoring_dice = score.non_scoring_dice.reduce((a, b) => a + b, 0)
+	console.log(nb_nn_scoring_dice);
+	if(nb_nn_scoring_dice > 0){
+		io.emit("can-roll", true);
+		io.emit("nb-nn-scoring", nb_nn_scoring_dice);
+	}
+	else{
+		io.emit("can-roll", false);
+	}
 	
-	io.emit("score", score.score);
-	io.emit("can-roll", true);
+	io.emit("score", scoretotal ? (score.score!==0 ? score.score + scoretotal : 0) : score.score);
+	
   }
   
 
@@ -62,9 +72,9 @@ function bankScore() {
 io.on("connection", (socket) => {
 	console.log("Client connected");
   
-	socket.on("roll-dice", (nbdicetoset) => {
-	  rollDice(nbdicetoset);
-	  io.emit("can-roll", false)
+	socket.on("roll-dice", (nbdicetoset, scoretotal) => {
+	  rollDice(nbdicetoset, scoretotal);
+	  //io.emit("can-roll", false)
 	});
 
 	socket.on("bank-score", () => {
@@ -77,7 +87,8 @@ io.on("connection", (socket) => {
 	
 	// Envoyer les valeurs initiales de dés et de score au client lorsqu'il se connecte
 	io.to(socket.id).emit("dice", dice);
-	io.to(socket.id).emit("score", score);
+	io.to(socket.id).emit("score", 0);
+	io.to(socket.id).emit("nb-nn-scoring", null);
 	io.to(socket.id).emit("can-roll", true);
 	});
 
