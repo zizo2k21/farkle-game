@@ -41,7 +41,7 @@ function rollDice(nb_dice_to_roll, scoretotal) {
 	score = analyse_score(dice);
 	const nb_nn_scoring_dice = score.non_scoring_dice.reduce((a, b) => a + b, 0)
 	console.log(nb_nn_scoring_dice);
-	if(nb_nn_scoring_dice > 0){
+	if(nb_nn_scoring_dice  > 0 && score.score !== 0){
 		io.emit("can-roll", true);
 		io.emit("nb-nn-scoring", nb_nn_scoring_dice);
 	}
@@ -71,6 +71,11 @@ function bankScore() {
 
 io.on("connection", (socket) => {
 	console.log("Client connected");
+
+	socket.on('create', function(room) {
+		socket.join(room);
+		console.log(room);
+	  });
   
 	socket.on("roll-dice", (nbdicetoset, scoretotal) => {
 	  rollDice(nbdicetoset, scoretotal);
